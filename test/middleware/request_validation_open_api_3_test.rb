@@ -32,7 +32,7 @@ describe Committee::Middleware::RequestValidation do
     params = { "datetime_string" => "2016-04-01T16:00:00.000+09:00" }
 
     check_parameter = lambda { |env|
-      assert_equal DateTime, env['rack.request.query_hash']["datetime_string"].class
+      assert_equal DateTime, env['committee.params']["datetime_string"].class
       [200, {}, []]
     }
 
@@ -117,7 +117,7 @@ describe Committee::Middleware::RequestValidation do
     }
 
     check_parameter = lambda { |env|
-      hash = env['rack.request.query_hash']
+      hash = env['committee.params']
       assert_equal DateTime, hash['nested_array'].first['update_time'].class
       assert_equal 1, hash['nested_array'].first['per_page']
 
@@ -303,7 +303,7 @@ describe Committee::Middleware::RequestValidation do
 
   it "passes through a valid request for OpenAPI3" do
     check_parameter = lambda { |env|
-      assert_equal 3, env['rack.request.query_hash']['limit']
+      assert_equal 3, env['committee.params']['limit']
       [200, {}, []]
     }
 

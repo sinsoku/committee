@@ -16,8 +16,6 @@ class Committee::SchemaValidator
       request.env[validator_option.params_key]&.merge!(path_params) unless path_params.empty?
 
       request_schema_validation(request)
-
-      @operation_object&.coerce_request_parameter(request.env["rack.request.query_hash"], header(request), validator_option) if !request.GET.nil? && !request.env["rack.request.query_hash"].empty?
     end
 
     def response_validate(status, headers, response, test_method = false)
