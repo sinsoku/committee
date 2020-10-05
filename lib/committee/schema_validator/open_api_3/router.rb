@@ -22,7 +22,7 @@ module Committee
         end
 
         def operation_object(request)
-          path = request.path
+          path = find_path(request)
           path = path.gsub(@prefix_regexp, '') if prefix_request?(request)
 
           request_method = request.request_method.downcase
@@ -35,7 +35,11 @@ module Committee
         def prefix_request?(request)
           return false unless @prefix_regexp
 
-          request.path =~ @prefix_regexp
+          find_path(request) =~ @prefix_regexp
+        end
+
+        def find_path(request)
+          request.respond_to?(:original_fullpath) ? request.original_fullpath : request.path
         end
       end
     end
